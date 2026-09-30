@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyFlow — a modern student daily routine planner for study, classes, tasks, breaks, and progress tracking.">
+  <meta name="theme-color" content="#5b5ce2">
+  <title>StudyFlow – Student Daily Routine Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <div><div class="brand-name">StudyFlow</div><div class="brand-tagline">Student Planner</div></div>
+      </div>
+      <nav class="sidebar-nav" aria-label="Primary navigation">
+        <a href="#dashboard" class="nav-link active" data-section="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
+        <a href="#routine" class="nav-link" data-section="routine"><span class="nav-icon">◷</span><span>My Routine</span></a>
+        <a href="#tasks" class="nav-link" data-section="tasks"><span class="nav-icon">✓</span><span>Tasks</span></a>
+        <a href="#progress" class="nav-link" data-section="progress"><span class="nav-icon">◔</span><span>Progress</span></a>
+        <a href="#settings" class="nav-link" data-section="settings"><span class="nav-icon">⚙</span><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-quote"><div class="quote-label">Daily reminder</div><p>Small progress every day becomes big progress over time.</p></div>
+      <div class="sidebar-footer">StudyFlow v1.0 • Front-end only</div>
+    </aside>
+
+    <div class="mobile-overlay hidden" id="mobileOverlay"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span></button>
+          <div><div class="eyebrow">Student Productivity Dashboard</div><div class="page-title" id="pageTitle">Dashboard</div></div>
+        </div>
+        <div class="topbar-right">
+          <div class="profile-summary"><div class="avatar" id="headerAvatar" aria-hidden="true">ST</div><div class="profile-text"><strong id="headerStudentName">Student</strong><span id="headerDate">--</span></div></div>
+          <button class="icon-btn" id="themeToggle" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">☾</button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="hero-card page-section" id="dashboard">
+          <div class="hero-copy">
+            <span class="hero-badge">Today’s focus</span>
+            <h1>Good Morning, <span id="heroStudentName">Student</span>!</h1>
+            <p>Plan your day, stay focused, and achieve your goals.</p>
+            <div class="hero-date-row"><div class="hero-date"><span id="heroDate">--</span><small id="heroDay">--</small></div><div class="clock" id="liveClock" aria-live="polite">--:--:--</div></div>
+            <div class="motivation"><span class="motivation-mark">✦</span><span>Success comes from consistency, not perfection.</span></div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="orb orb-one"></div><div class="orb orb-two"></div><div class="orb orb-three"></div>
+            <div class="hero-visual-card"><div class="mini-title">Your day at a glance</div><div class="mini-line"><span>Routines</span><strong id="heroRoutineCount">0</strong></div><div class="mini-line"><span>Tasks</span><strong id="heroTaskCount">0</strong></div><div class="mini-line"><span>Progress</span><strong id="heroProgress">0%</strong></div></div>
+          </div>
+        </section>
+
+        <section class="stats-grid page-section" aria-label="Today's statistics">
+          <article class="stat-card"><div class="stat-icon icon-purple">☷</div><div><span>Today’s Tasks</span><strong id="statTotal">0</strong><small id="statTotalHint">All planned items</small></div></article>
+          <article class="stat-card"><div class="stat-icon icon-green">✓</div><div><span>Completed</span><strong id="statCompleted">0</strong><small id="statCompletedHint">0% completion</small></div></article>
+          <article class="stat-card"><div class="stat-icon icon-orange">⌛</div><div><span>Pending</span><strong id="statPending">0</strong><small id="statPendingHint">0 need attention</small></div></article>
+          <article class="stat-card"><div class="stat-icon icon-blue">◔</div><div><span>Completion Rate</span><strong id="statRate">0%</strong><small>Based on routines</small></div></article>
+        </section>
+
+        <section class="page-section section-block" id="routine">
+          <div class="section-header"><div><div class="eyebrow">Organize your day</div><h2>Daily Routine</h2><p>Build a clear timeline for study, classes, breaks, and personal activities.</p></div><button class="primary-btn" id="openRoutineModal" type="button">＋ Add New Routine</button></div>
+          <div class="toolbar">
+            <div class="date-controls"><button class="secondary-btn" id="prevDay" type="button">‹ Previous</button><button class="date-display" id="selectedDateDisplay" type="button" title="Choose a date">--</button><button class="secondary-btn" id="todayBtn" type="button">Today</button><button class="secondary-btn" id="nextDay" type="button">Next ›</button><input type="date" id="routineDatePicker" class="visually-hidden-date" aria-label="Select routine date"></div>
+            <div class="search-wrap"><span class="search-icon">⌕</span><input type="search" id="routineSearch" placeholder="Search routine..." aria-label="Search routines"><button class="clear-search" id="clearSearch" type="button" aria-label="Clear search" title="Clear search">×</button></div>
+          </div>
+          <div class="filter-row" id="routineFilters" aria-label="Routine filters">
+            <button class="filter-chip active" data-filter="all" type="button">All</button><button class="filter-chip" data-filter="completed" type="button">Completed</button><button class="filter-chip" data-filter="pending" type="button">Pending</button><button class="filter-chip" data-filter="High" type="button">High Priority</button><button class="filter-chip" data-filter="Medium" type="button">Medium Priority</button><button class="filter-chip" data-filter="Low" type="button">Low Priority</button>
+          </div>
+          <div class="category-strip" aria-label="Routine categories">
+            <button class="category-card active" data-category="all" type="button"><span class="category-emoji">✦</span><span>All</span></button><button class="category-card" data-category="Study" type="button"><span class="category-emoji">📚</span><span>Study</span></button><button class="category-card" data-category="Coding" type="button"><span class="category-emoji">💻</span><span>Coding</span></button><button class="category-card" data-category="Assignment" type="button"><span class="category-emoji">📝</span><span>Assignment</span></button><button class="category-card" data-category="Exam Preparation" type="button"><span class="category-emoji">🎯</span><span>Exam Prep</span></button><button class="category-card" data-category="Exercise" type="button"><span class="category-emoji">🏃</span><span>Exercise</span></button><button class="category-card" data-category="Break" type="button"><span class="category-emoji">☕</span><span>Break</span></button><button class="category-card" data-category="Personal" type="button"><span class="category-emoji">👤</span><span>Personal</span></button>
+          </div>
+          <div class="routine-layout">
+            <div class="routine-panel"><div class="timeline-header"><h3 id="routineListTitle">Today’s Timeline</h3><span class="count-pill" id="routineCountPill">0 items</span></div><div class="timeline" id="routineList" aria-live="polite"></div><div class="empty-state hidden" id="routineEmptyState"><div class="empty-icon">◷</div><h3>No routines planned for this day.</h3><p>Start with one small, meaningful block of time.</p><button class="primary-btn" id="emptyStateAddBtn" type="button">＋ Add Your First Routine</button></div></div>
+            <aside class="insight-panel"><div class="panel-label">Day overview</div><div class="progress-ring-wrap"><div class="progress-ring" id="dailyProgressRing" style="--progress: 0%"><div class="progress-ring-inner"><strong id="ringPercent">0%</strong><span>complete</span></div></div></div><div class="insight-stats"><div><span>Total routines</span><strong id="overviewTotal">0</strong></div><div><span>Completed</span><strong id="overviewCompleted">0</strong></div><div><span>Pending</span><strong id="overviewPending">0</strong></div><div><span>Study hours</span><strong id="overviewHours">0h</strong></div></div><div class="focus-tip"><span>Focus tip</span><p id="focusTipText">Start with one clear block, then build the rest of your day around it.</p></div></aside>
+          </div>
+        </section>
+
+        <section class="page-section section-block" id="tasks">
+          <div class="section-header"><div><div class="eyebrow">Keep the small things moving</div><h2>Today’s Tasks</h2><p>Track assignments, quick actions, and deadlines separately from your routine.</p></div><button class="secondary-btn" id="openTaskModal" type="button">＋ Add Task</button></div>
+          <div class="task-summary"><div class="task-progress"><div class="progress-line"><span id="taskProgressBar"></span></div><div class="task-progress-label"><span id="taskProgressText">0 of 0 completed</span><strong id="taskProgressPercent">0%</strong></div></div><div class="task-filter"><button class="mini-filter active" data-task-filter="all" type="button">All</button><button class="mini-filter" data-task-filter="pending" type="button">Pending</button><button class="mini-filter" data-task-filter="completed" type="button">Completed</button></div></div>
+          <div class="task-list" id="taskList"></div><div class="empty-state compact hidden" id="taskEmptyState"><div class="empty-icon">✓</div><h3>No tasks yet</h3><p>Add one actionable task to get started.</p><button class="secondary-btn" id="emptyTaskBtn" type="button">＋ Add Task</button></div>
+        </section>
+
+        <section class="page-section section-block" id="progress">
+          <div class="section-header"><div><div class="eyebrow">See your momentum</div><h2>Progress Dashboard</h2><p>Measure consistency across routines and daily tasks.</p></div></div>
+          <div class="progress-grid"><article class="progress-main-card"><div class="progress-main-copy"><span class="panel-label">Daily Progress</span><h3 id="progressHeadline">0% Completed</h3><p id="progressMessage">Every completed block makes your plan more useful.</p></div><div class="big-progress-circle"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="circle-track" cx="60" cy="60" r="48"></circle><circle class="circle-value" id="progressCircleValue" cx="60" cy="60" r="48"></circle></svg><div class="big-circle-label"><strong id="progressCircleText">0%</strong><span>today</span></div></div></article>
+            <div class="progress-metric-grid"><article class="metric-card"><span>Total routines</span><strong id="progressTotalRoutines">0</strong><small>Selected date</small></article><article class="metric-card"><span>Completed routines</span><strong id="progressCompletedRoutines">0</strong><small>Selected date</small></article><article class="metric-card"><span>Pending routines</span><strong id="progressPendingRoutines">0</strong><small>Selected date</small></article><article class="metric-card"><span>Study hours</span><strong id="progressStudyHours">0h</strong><small>Study + coding + exam prep</small></article><article class="metric-card"><span>Tasks completed</span><strong id="progressTasksCompleted">0</strong><small>Selected date</small></article><article class="metric-card"><span>Task completion</span><strong id="progressTaskRate">0%</strong><small>Selected date</small></article></div>
+          </div>
+        </section>
+
+        <section class="page-section section-block" id="settings">
+          <div class="section-header"><div><div class="eyebrow">Make StudyFlow yours</div><h2>Settings</h2><p>Update your profile preferences and application behavior.</p></div></div>
+          <div class="settings-grid"><form class="settings-card" id="settingsForm"><div class="settings-card-header"><span>Profile</span><small>Stored locally on this browser</small></div><div class="form-grid"><div class="form-group"><label for="studentNameInput">Student name <span>*</span></label><input id="studentNameInput" type="text" maxlength="40" required placeholder="e.g. Riya"><small class="field-error" id="studentNameError"></small></div><div class="form-group"><label for="avatarInput">Avatar initials</label><input id="avatarInput" type="text" maxlength="2" placeholder="ST"></div></div><button class="primary-btn" type="submit">Save Changes</button></form>
+            <div class="settings-card"><div class="settings-card-header"><span>Preferences</span><small>Improve your daily workflow</small></div><div class="setting-row"><div><strong>Dark mode</strong><small>Switch between light and dark themes.</small></div><button class="toggle-switch" id="settingsThemeToggle" type="button" aria-pressed="false"><span></span></button></div><div class="setting-row"><div><strong>Sample data</strong><small>Load realistic starter routines again.</small></div><button class="secondary-btn small" id="resetSampleData" type="button">Restore Samples</button></div><div class="setting-row"><div><strong>Clear local data</strong><small>Remove all routines, tasks, and profile settings.</small></div><button class="danger-outline-btn small" id="clearAllData" type="button">Clear Data</button></div></div>
+          </div>
+        </section>
+      </div>
+      <footer class="app-footer"><span><strong>StudyFlow</strong> — Plan Your Day. Track Your Progress. Achieve Your Goals.</span><span>Built with HTML5, CSS3 & Vanilla JavaScript</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="routineModal" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="routineModalTitle"><div class="modal-header"><div><span class="eyebrow">Routine management</span><h2 id="routineModalTitle">Add New Routine</h2><p>Create a focused block for your day.</p></div><button class="icon-btn" type="button" data-close="routineModal" aria-label="Close routine form">×</button></div><form id="routineForm"><input type="hidden" id="routineId"><div class="form-grid"><div class="form-group full"><label for="activityTitle">Activity title <span>*</span></label><input id="activityTitle" type="text" required maxlength="80" placeholder="e.g. JavaScript Practice"><small class="field-error" id="activityTitleError"></small></div><div class="form-group"><label for="activityDate">Date <span>*</span></label><input id="activityDate" type="date" required><small class="field-error" id="activityDateError"></small></div><div class="form-group"><label for="activityCategory">Category <span>*</span></label><select id="activityCategory" required><option value="Study">Study</option><option value="Class">Class</option><option value="Assignment">Assignment</option><option value="Exam Preparation">Exam Preparation</option><option value="Exercise">Exercise</option><option value="Personal">Personal</option><option value="Break">Break</option><option value="Other">Other</option><option value="Coding">Coding</option></select></div><div class="form-group"><label for="startTime">Start time <span>*</span></label><input id="startTime" type="time" required><small class="field-error" id="startTimeError"></small></div><div class="form-group"><label for="endTime">End time <span>*</span></label><input id="endTime" type="time" required><small class="field-error" id="endTimeError"></small></div><div class="form-group full"><label for="activityDescription">Description</label><textarea id="activityDescription" rows="3" maxlength="240" placeholder="Add a short note, goal, or location."></textarea></div><div class="form-group"><label for="activityPriority">Priority</label><select id="activityPriority"><option value="High">High</option><option value="Medium" selected>Medium</option><option value="Low">Low</option></select></div><div class="form-group"><label for="activityReminder">Reminder</label><select id="activityReminder"><option value="none">No reminder</option><option value="5">5 minutes before</option><option value="15">15 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option></select></div><div class="form-group full"><label class="checkbox-label"><input id="activityCompleted" type="checkbox"><span>Mark this routine as completed</span></label></div></div><div class="modal-actions"><button class="secondary-btn" type="button" data-close="routineModal">Cancel</button><button class="primary-btn" type="submit" id="routineSubmitBtn">Add Routine</button></div></form></div></div>
+
+  <div class="modal-backdrop hidden" id="taskModal" role="presentation"><div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle"><div class="modal-header"><div><span class="eyebrow">Task management</span><h2 id="taskModalTitle">Add Task</h2><p>Keep today’s actionable items clear and manageable.</p></div><button class="icon-btn" type="button" data-close="taskModal" aria-label="Close task form">×</button></div><form id="taskForm"><input type="hidden" id="taskId"><div class="form-grid"><div class="form-group full"><label for="taskName">Task name <span>*</span></label><input id="taskName" type="text" required maxlength="100" placeholder="e.g. Submit CSS assignment"><small class="field-error" id="taskNameError"></small></div><div class="form-group"><label for="taskDate">Date <span>*</span></label><input id="taskDate" type="date" required></div><div class="form-group"><label for="taskDueTime">Due time</label><input id="taskDueTime" type="time"></div><div class="form-group"><label for="taskPriority">Priority</label><select id="taskPriority"><option value="High">High</option><option value="Medium" selected>Medium</option><option value="Low">Low</option></select></div><div class="form-group full"><label class="checkbox-label"><input id="taskCompleted" type="checkbox"><span>Mark this task as completed</span></label></div></div><div class="modal-actions"><button class="secondary-btn" type="button" data-close="taskModal">Cancel</button><button class="primary-btn" type="submit" id="taskSubmitBtn">Add Task</button></div></form></div></div>
+
+  <div class="modal-backdrop hidden" id="confirmModal" role="presentation"><div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="confirm-icon">!</div><h2 id="confirmTitle">Delete item?</h2><p id="confirmMessage">Are you sure you want to delete this routine?</p><div class="modal-actions"><button class="secondary-btn" type="button" id="confirmCancel">Cancel</button><button class="danger-btn" type="button" id="confirmDelete">Delete</button></div></div></div>
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+  <script src="js/script.js" defer></script>
+</body>
+</html>
